@@ -31,7 +31,7 @@ if __name__ == "__main__":
         trainer = ModelTrainer(
             traindata_dir="/data/ephemeral/home/data/train", 
             traindata_info_file="/data/ephemeral/home/data/train.csv", 
-            save_result_path="/data/ephemeral/home/baseline_code/train_result",
+            save_result_path="/data/ephemeral/home/results",
             model_name= model_name,
             batch_size= train_batch_size,
             lr= lr,
@@ -56,7 +56,7 @@ if __name__ == "__main__":
         inference_runner = ModelInference(
             testdata_dir="/data/ephemeral/home/data/test",
             testdata_info_file="/data/ephemeral/home/data/test.csv",
-            save_result_path="/data/ephemeral/home/baseline_code/train_result",
+            save_result_path="/data/ephemeral/home/results",
             model_name= model_name,
             batch_size= test_batch_size,
             num_classes= num_classes,
