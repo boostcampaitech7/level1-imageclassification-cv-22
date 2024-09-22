@@ -32,13 +32,16 @@ class Trainer:
         self.result_path = result_path  # 모델 저장 경로
         self.best_models = [] # 가장 좋은 상위 3개 모델의 정보를 저장할 리스트
         self.lowest_loss = float('inf') # 가장 낮은 Loss를 저장할 변수
+        self.current_accuracy = 0
 
     def save_model(self, epoch, loss):
         # 모델 저장 경로 설정
         os.makedirs(self.result_path, exist_ok=True)
 
         # 현재 에폭 모델 저장
-        current_model_path = os.path.join(self.result_path, f'model_epoch_{epoch}_loss_{loss:.4f}.pt')
+        model_path = os.path.join(self.result_path, self.model.model_name)
+        os.makedirs(model_path, exist_ok=True)
+        current_model_path = os.path.join(model_path, f'model_epoch_{epoch}_loss_{loss:.4f}_acc_{self.current_accuracy:.4f}.pt')
         torch.save(self.model.state_dict(), current_model_path)
 
         # 최상위 3개 모델 관리
@@ -52,9 +55,9 @@ class Trainer:
         # 가장 낮은 손실의 모델 저장
         if loss < self.lowest_loss:
             self.lowest_loss = loss
-            best_model_path = os.path.join(self.result_path, 'best_model.pt')
+            best_model_path = os.path.join(self.result_path, self.model.model_name, 'best_model.pt')
             torch.save(self.model.state_dict(), best_model_path)
-            print(f"Save {epoch}epoch result. Loss = {loss:.4f}")
+            print(f"Save {epoch+1}epoch result. Loss = {loss:.4f}")
 
     def train_epoch(self) -> float:
         # 한 에폭 동안의 훈련을 진행
@@ -111,6 +114,7 @@ class Trainer:
                 progress_bar.set_postfix(loss=loss.item())
         
         accuracy = correct_predictions / total_samples
+        self.current_accuracy = accuracy
         print(f"Validation Accuracy: {accuracy:.4f}")
         
         return total_loss / len(self.val_loader)

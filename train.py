@@ -19,7 +19,7 @@ class ModelTrainer:
                  batch_size=64,
                  lr=0.001,
                  pretrained=True,
-                 epochs=5,
+                 epochs=5,  
                  optimizer_type='Adam',
                  scheduler_gamma=0.1,
                  scheduler_step_multiplier=2,
@@ -65,7 +65,7 @@ class ModelTrainer:
         )
 
         # Set up transformations for training and validation.
-        transform_selector = TransformSelector(transform_type="albumentations")
+        transform_selector = TransformSelector(transform_type="torchvision")
         train_transform = transform_selector.get_transform(is_train=True)
         val_transform = transform_selector.get_transform(is_train=False)
 

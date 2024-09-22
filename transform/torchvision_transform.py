@@ -3,6 +3,7 @@ import numpy as np
 from PIL import Image
 
 from torchvision import transforms
+from PIL import Image
 
 class TorchvisionTransform:
 

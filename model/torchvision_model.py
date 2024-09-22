@@ -14,6 +14,7 @@ class TorchvisionModel(nn.Module):
     ):
         super(TorchvisionModel, self).__init__()
         self.model = models.__dict__[model_name](pretrained=pretrained)
+        self.model_name = model_name
         
         # 모델의 최종 분류기 부분을 사용자 정의 클래스 수에 맞게 조정
         if 'fc' in dir(self.model):
