@@ -15,7 +15,7 @@ scheduler_type = 'StepLR'
 scheduler_gamma = 0.1 # StepLR, ReduceLROnPlateau에서 사용
 scheduler_step_multiplier = 2 # StepLR에서 사용
 scheduler_t_max = 10 # CosineAnnealingLR에서 사용
-num_workers = 6
+num_workers = 4
 
 num_classes = 500
 train_pretrained = True
