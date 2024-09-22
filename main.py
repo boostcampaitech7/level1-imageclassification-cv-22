@@ -2,13 +2,13 @@ from train import ModelTrainer
 from inference import ModelInference
 
 ###################################
-model_name = 'resnet18'
+model_name = 'beit_base_patch16_384'
 
-train_batch_size = 64
-test_batch_size = 64
+train_batch_size = 32
+test_batch_size = 32
 
-lr = 0.001
-epochs = 10
+lr = 0.0001
+epochs = 60
 
 optimizer_type = 'Adam'
 scheduler_type = 'StepLR'
