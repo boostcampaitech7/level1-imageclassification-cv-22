@@ -2,6 +2,7 @@ import torch
 import numpy as np
 
 from torchvision import transforms
+from PIL import Image
 
 class TorchvisionTransform:
 
