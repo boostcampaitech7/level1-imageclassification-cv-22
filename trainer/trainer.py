@@ -32,6 +32,7 @@ class Trainer:
         self.result_path = result_path  # 모델 저장 경로
         self.best_models = [] # 가장 좋은 상위 3개 모델의 정보를 저장할 리스트
         self.lowest_loss = float('inf') # 가장 낮은 Loss를 저장할 변수
+        self.current_accuracy = 0
 
     def save_model(self, epoch, loss):
         # 모델 저장 경로 설정
@@ -40,7 +41,7 @@ class Trainer:
         # 현재 에폭 모델 저장
         model_path = os.path.join(self.result_path, self.model.model_name)
         os.makedirs(model_path, exist_ok=True)
-        current_model_path = os.path.join(model_path, f'model_epoch_{epoch}_loss_{loss:.4f}.pt')
+        current_model_path = os.path.join(model_path, f'model_epoch_{epoch}_loss_{loss:.4f}_acc_{self.current_accuracy:.4f}.pt')
         torch.save(self.model.state_dict(), current_model_path)
 
         # 최상위 3개 모델 관리
@@ -113,6 +114,7 @@ class Trainer:
                 progress_bar.set_postfix(loss=loss.item())
         
         accuracy = correct_predictions / total_samples
+        self.current_accuracy = accuracy
         print(f"Validation Accuracy: {accuracy:.4f}")
         
         return total_loss / len(self.val_loader)
