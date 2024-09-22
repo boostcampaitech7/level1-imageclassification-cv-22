@@ -1,17 +1,19 @@
 from train import ModelTrainer
 from inference import ModelInference
+import torch
+from config import wandb_config
 
 ###################################
-model_name = 'resnet18'
+#model_name = 'resnet18'
+model_name = 'coatnet_3_rw_224.sw_in12k'
 
-train_batch_size = 64
-test_batch_size = 64
+train_batch_size = wandb_config["batch_size"]
+test_batch_size = wandb_config["batch_size"]
 
-lr = 0.001
-epochs = 10
-
-optimizer_type = 'Adam'
-scheduler_type = 'StepLR'
+lr = wandb_config["lr"]
+epochs = wandb_config["epochs"]
+optimizer_type = wandb_config["optimizer"]
+scheduler_type = wandb_config["scheduler"]
 scheduler_gamma = 0.1 # StepLR, ReduceLROnPlateau에서 사용
 scheduler_step_multiplier = 2 # StepLR에서 사용
 scheduler_t_max = 10 # CosineAnnealingLR에서 사용
@@ -24,6 +26,7 @@ test_pretrained = False
 
 if __name__ == "__main__":
     # Training process
+    torch.cuda.empty_cache()
     train_model = True  # Set this to False if you don't want to train
     
     if train_model:

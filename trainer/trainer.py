@@ -7,6 +7,10 @@ import torch.optim as optim
 from tqdm.auto import tqdm
 from torch.utils.data import DataLoader
 
+import wandb
+
+from config import wandb_config
+
 class Trainer:
     def __init__(
         self, 
@@ -121,6 +125,11 @@ class Trainer:
 
     def train(self) -> None:
         # 전체 훈련 과정을 관리
+        wandb.init(
+            project="CoAtNet",
+            config=wandb_config
+        )
+
         for epoch in range(self.epochs):
             print(f"Epoch {epoch+1}/{self.epochs}")
             
@@ -130,3 +139,6 @@ class Trainer:
 
             self.save_model(epoch, val_loss)
             self.scheduler.step()
+
+            wandb.log({"train_loss":train_loss, "val_loss":val_loss, "val_accuracy":self.current_accuracy})
+        wandb.finish()
