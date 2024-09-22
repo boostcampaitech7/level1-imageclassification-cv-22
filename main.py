@@ -14,6 +14,7 @@ lr = wandb_config["lr"]
 epochs = wandb_config["epochs"]
 optimizer_type = wandb_config["optimizer"]
 scheduler_type = wandb_config["scheduler"]
+patience = 4
 scheduler_gamma = 0.1 # StepLR, ReduceLROnPlateau에서 사용
 scheduler_step_multiplier = 2 # StepLR에서 사용
 scheduler_t_max = 10 # CosineAnnealingLR에서 사용
@@ -45,7 +46,8 @@ if __name__ == "__main__":
             scheduler_step_multiplier=scheduler_step_multiplier,
             scheduler_type=scheduler_type,
             scheduler_t_max=scheduler_t_max,
-            num_workers=num_workers
+            num_workers=num_workers,
+            patience=patience
         )
         # Run the training process
         trainer.run()

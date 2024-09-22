@@ -22,7 +22,8 @@ class Trainer:
         scheduler: optim.lr_scheduler,
         loss_fn: torch.nn.modules.loss._Loss, 
         epochs: int,
-        result_path: str
+        result_path: str,
+        patience: bool
     ):
         # 클래스 초기화: 모델, 디바이스, 데이터 로더 등 설정
         self.model = model  # 훈련할 모델
@@ -37,6 +38,7 @@ class Trainer:
         self.best_models = [] # 가장 좋은 상위 3개 모델의 정보를 저장할 리스트
         self.lowest_loss = float('inf') # 가장 낮은 Loss를 저장할 변수
         self.current_accuracy = 0
+        self.patience = patience
 
     def save_model(self, epoch, loss):
         # 모델 저장 경로 설정
@@ -130,6 +132,7 @@ class Trainer:
             config=wandb_config
         )
 
+        patience_count = 0
         for epoch in range(self.epochs):
             print(f"Epoch {epoch+1}/{self.epochs}")
             
@@ -141,4 +144,12 @@ class Trainer:
             self.scheduler.step()
 
             wandb.log({"train_loss":train_loss, "val_loss":val_loss, "val_accuracy":self.current_accuracy})
+            
+            if val_loss > self.lowest_loss:
+                patience_count += 1
+            else:
+                patience_count = 0
+            if patience_count == self.patience:
+                break
+
         wandb.finish()
