@@ -5,8 +5,8 @@ from config import wandb_config
 
 ###################################
 #model_name = 'resnet18'
-model_name = 'coatnet_3_rw_224.sw_in12k'
-
+#model_name = 'coatnet_3_rw_224.sw_in12k'
+model_name = 'coatnet_2_rw_224'
 train_batch_size = wandb_config["batch_size"]
 test_batch_size = wandb_config["batch_size"]
 

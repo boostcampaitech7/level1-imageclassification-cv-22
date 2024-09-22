@@ -47,7 +47,7 @@ class Trainer:
         # 현재 에폭 모델 저장
         model_path = os.path.join(self.result_path, self.model.model_name)
         os.makedirs(model_path, exist_ok=True)
-        current_model_path = os.path.join(model_path, f'model_epoch_{epoch}_loss_{loss:.4f}_acc_{self.current_accuracy:.4f}.pt')
+        current_model_path = os.path.join(model_path, f'model_epoch_{epoch+1}_loss_{loss:.4f}_acc_{self.current_accuracy:.4f}.pt')
         torch.save(self.model.state_dict(), current_model_path)
 
         # 최상위 3개 모델 관리
@@ -144,7 +144,7 @@ class Trainer:
             self.scheduler.step()
 
             wandb.log({"train_loss":train_loss, "val_loss":val_loss, "val_accuracy":self.current_accuracy})
-            
+
             if val_loss > self.lowest_loss:
                 patience_count += 1
             else:
