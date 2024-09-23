@@ -9,8 +9,6 @@ from torch.utils.data import DataLoader
 
 import wandb
 
-from config import wandb_config
-
 class Trainer:
     def __init__(
         self, 
