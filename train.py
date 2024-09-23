@@ -25,7 +25,8 @@ class ModelTrainer:
                  scheduler_step_multiplier=2,
                  scheduler_type='StepLR',
                  scheduler_t_max=10,
-                 num_workers=6):
+                 num_workers=6,
+                 patience=4):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.traindata_dir = traindata_dir
         self.traindata_info_file = traindata_info_file
@@ -48,6 +49,7 @@ class ModelTrainer:
         self.val_loader = None
         self.loss_fn = None
         self.num_classes = 0
+        self.patience = patience
 
         
     def prepare_data(self):
@@ -163,6 +165,7 @@ class ModelTrainer:
             loss_fn=self.loss_fn,
             epochs=self.epochs,
             result_path=self.save_result_path,
+            patience=self.patience
         )
 
         # Start training.
