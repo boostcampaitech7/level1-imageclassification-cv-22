@@ -10,6 +10,8 @@ from transform.transform_selector import TransformSelector
 from model.model_selector import ModelSelector
 from loss.loss import Loss
 
+from config import my_config
+
 class ModelTrainer:
     def __init__(self, 
                  traindata_dir, 
@@ -67,7 +69,7 @@ class ModelTrainer:
         )
 
         # Set up transformations for training and validation.
-        transform_selector = TransformSelector(transform_type="torchvision")
+        transform_selector = TransformSelector(transform_type=my_config.transform_type)
         train_transform = transform_selector.get_transform(is_train=True)
         val_transform = transform_selector.get_transform(is_train=False)
 

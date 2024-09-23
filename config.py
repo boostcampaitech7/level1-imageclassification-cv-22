@@ -1,4 +1,5 @@
 from torchvision import transforms
+import albumentations as A
 
 class MyConfig:
     def __init__(self):
@@ -10,6 +11,7 @@ class MyConfig:
         self.num_classes = 500
 
         # transformations
+        self.transform_type = "torchvision"
         self.image_size = 384
         self.train_transforms = [
             transforms.RandomHorizontalFlip(p=0.5),  # 50% 확률로 이미지를 수평 뒤집기
