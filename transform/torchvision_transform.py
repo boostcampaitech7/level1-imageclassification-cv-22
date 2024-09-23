@@ -3,13 +3,12 @@ import numpy as np
 from PIL import Image
 
 from torchvision import transforms
-from PIL import Image
 
 from config import my_config
 
 class TorchvisionTransform:
 
-    def __init__(self, is_train: bool = True):
+    def __init__(self, is_train: bool = True, size: tuple=(224, 224)):
         # 공통 변환 설정: 이미지 리사이즈, 텐서 변환, 정규화
         common_transforms = [
             transforms.Resize((my_config.image_size, my_config.image_size)),  # 이미지를 224x224 크기로 리사이즈
