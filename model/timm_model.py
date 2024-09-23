@@ -13,6 +13,7 @@ class TimmModel(nn.Module):
         pretrained: bool
     ):
         super(TimmModel, self).__init__()
+        print("모델 : ",  model_name)
         self.model = timm.create_model(
             model_name, 
             pretrained=pretrained, 

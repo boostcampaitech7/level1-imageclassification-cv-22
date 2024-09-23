@@ -15,7 +15,7 @@ class ModelSelector:
         **kwargs
     ):
         
-        # 모델 유형에 따라 적절한 모델 객체를 생성
+        print("모델 : ", model_type)
         if model_type == 'simple':
             self.model = SimpleCNN(num_classes=num_classes)
         

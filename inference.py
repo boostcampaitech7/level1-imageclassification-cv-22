@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 from dataset.dataset import CustomDataset
 from transform.transform_selector import TransformSelector
 from model.model_selector import ModelSelector
+import wandb
 
 class ModelInference:
     def __init__(self, 
@@ -37,7 +38,7 @@ class ModelInference:
         test_info = pd.read_csv(self.testdata_info_file)
 
         # Set up transformations for test data.
-        transform_selector = TransformSelector(transform_type="torchvision")
+        transform_selector = TransformSelector(transform_type="customed_torchvision")
         test_transform = transform_selector.get_transform(is_train=False)
 
         # Create dataset instance for test data.
@@ -98,6 +99,8 @@ class ModelInference:
         test_info['target'] = predictions
         test_info = test_info.reset_index().rename(columns={"index": "ID"})
         test_info.to_csv(f"/data/ephemeral/home/results/{self.model.model_name}/output.csv", index=False)
+        wandb.log({"test_predictions": wandb.Table(dataframe=test_info)})
+        wandb.finish()
 
     def run_inference(self):
         # Prepare data
