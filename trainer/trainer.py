@@ -125,8 +125,6 @@ class Trainer:
 
     def train(self) -> None:
         # 전체 훈련 과정을 관리
-
-        patience_count = 0
         for epoch in range(self.epochs):
             print(f"Epoch {epoch+1}/{self.epochs}")
             
@@ -137,12 +135,5 @@ class Trainer:
             self.save_model(epoch, val_loss)
 
             wandb.log({"train_loss":train_loss, "val_loss":val_loss, "val_accuracy":self.current_accuracy})
-
-            if val_loss >= self.lowest_loss:
-                patience_count += 1
-            else:
-                patience_count = 0
-            if patience_count == self.patience:
-                break
 
         wandb.finish()
