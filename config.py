@@ -3,7 +3,7 @@ import albumentations as A
 
 class MyConfig:
     def __init__(self):
-        self.model_name = "facebook/deit-base-distilled-patch16-384"
+        self.model_name = 'deit_base_distilled_patch16_384'
         self.train_batch_size = 32
         self.test_batch_size = 32
         self.lr = 0.0001
