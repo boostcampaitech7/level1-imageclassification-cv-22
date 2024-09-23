@@ -127,10 +127,6 @@ class Trainer:
 
     def train(self) -> None:
         # 전체 훈련 과정을 관리
-        wandb.init(
-            project="CoAtNet",
-            config=wandb_config
-        )
 
         patience_count = 0
         for epoch in range(self.epochs):

@@ -1,29 +1,36 @@
 from train import ModelTrainer
 from inference import ModelInference
 import torch
-from config import wandb_config
+from config import my_config
+import wandb
 
 ###################################
-#model_name = 'resnet18'
-#model_name = 'coatnet_3_rw_224.sw_in12k'
-model_name = 'coatnet_2_rw_224'
-train_batch_size = wandb_config["batch_size"]
-test_batch_size = wandb_config["batch_size"]
+model_name = my_config.model_name
+train_batch_size = my_config.train_batch_size
+test_batch_size = my_config.test_batch_size
 
-lr = wandb_config["lr"]
-epochs = wandb_config["epochs"]
-optimizer_type = wandb_config["optimizer"]
-scheduler_type = wandb_config["scheduler"]
-patience = 4
-scheduler_gamma = 0.1 # StepLR, ReduceLROnPlateau에서 사용
-scheduler_step_multiplier = 2 # StepLR에서 사용
-scheduler_t_max = 10 # CosineAnnealingLR에서 사용
-num_workers = 6
+lr = my_config.lr
+epochs = my_config.epochs
+optimizer_type = my_config.optimizer_type
+scheduler_type = my_config.scheduler_type
+patience = my_config.patience
+scheduler_gamma = my_config.scheduler_gamma # StepLR, ReduceLROnPlateau에서 사용
+scheduler_step_multiplier = my_config.scheduler_step_multiplier # StepLR에서 사용
+scheduler_t_max = my_config.scheduler_t_max # CosineAnnealingLR에서 사용
+num_workers = my_config.num_workers
 
-num_classes = 500
+num_classes = my_config.num_classes
+
 train_pretrained = True
 test_pretrained = False
 ###################################
+
+# Wandb 설정 !!!!!!
+wandb.init(project="sketch_image_template_Ver", name=f"{model_name}")
+
+# wandb에 변수 기록
+wandb.config.update(my_config.get_config())
+
 
 if __name__ == "__main__":
     # Training process
