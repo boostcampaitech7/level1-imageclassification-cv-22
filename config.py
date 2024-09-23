@@ -3,10 +3,10 @@ import albumentations as A
 
 class MyConfig:
     def __init__(self):
-        self.model_name = 'deit_base_distilled_patch16_384'
-        self.train_batch_size = 32
-        self.test_batch_size = 32
-        self.lr = 0.0001
+        self.model_name = 'coatnet_rmlp_2_rw_384'
+        self.train_batch_size = 16
+        self.test_batch_size = 16
+        self.lr = 0.00001
         self.epochs = 20
         self.num_classes = 500
 

@@ -3,6 +3,8 @@ from inference import ModelInference
 import torch
 from config import my_config
 import wandb
+import random
+import numpy as np
 
 ###################################
 model_name = my_config.model_name
@@ -26,10 +28,22 @@ test_pretrained = False
 ###################################
 
 # Wandb 설정 !!!!!!
-wandb.init(project="sketch_image_template_Ver", name=f"{model_name}")
+wandb.init(project="deit_coatnet_384", name=f"{model_name}")
 
 # wandb에 변수 기록
 wandb.config.update(my_config.get_config())
+
+def set_seed(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    
+set_seed(42)
 
 
 if __name__ == "__main__":

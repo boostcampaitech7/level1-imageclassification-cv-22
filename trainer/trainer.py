@@ -21,7 +21,7 @@ class Trainer:
         loss_fn: torch.nn.modules.loss._Loss, 
         epochs: int,
         result_path: str,
-        patience: bool
+        patience: int
     ):
         # 클래스 초기화: 모델, 디바이스, 데이터 로더 등 설정
         self.model = model  # 훈련할 모델
@@ -135,11 +135,10 @@ class Trainer:
             print(f"Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Validation Loss: {val_loss:.4f}\n")
 
             self.save_model(epoch, val_loss)
-            self.scheduler.step()
 
             wandb.log({"train_loss":train_loss, "val_loss":val_loss, "val_accuracy":self.current_accuracy})
 
-            if val_loss > self.lowest_loss:
+            if val_loss >= self.lowest_loss:
                 patience_count += 1
             else:
                 patience_count = 0
