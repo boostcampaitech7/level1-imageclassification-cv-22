@@ -4,12 +4,14 @@ from PIL import Image
 
 from torchvision import transforms
 
+from config import my_config
+
 class TorchvisionTransform:
 
     def __init__(self, is_train: bool = True, size: tuple=(224, 224)):
         # 공통 변환 설정: 이미지 리사이즈, 텐서 변환, 정규화
         common_transforms = [
-            transforms.Resize(size),  # 이미지를 224x224 크기로 리사이즈
+            transforms.Resize((my_config.image_size, my_config.image_size)),  # 이미지를 224x224 크기로 리사이즈
             transforms.ToTensor(),  # 이미지를 PyTorch 텐서로 변환
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # 정규화
         ]
@@ -17,11 +19,7 @@ class TorchvisionTransform:
         if is_train:
             # 훈련용 변환: 랜덤 수평 뒤집기, 랜덤 회전, 색상 조정 추가
             self.transform = transforms.Compose(
-                [
-                    transforms.RandomHorizontalFlip(p=0.5),  # 50% 확률로 이미지를 수평 뒤집기
-                    transforms.RandomRotation(15),  # 최대 15도 회전
-                    transforms.ColorJitter(brightness=0.2, contrast=0.2),  # 밝기 및 대비 조정
-                ] + common_transforms
+                my_config.train_transforms + common_transforms
             )
         else:
             # 검증/테스트용 변환: 공통 변환만 적용

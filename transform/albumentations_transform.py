@@ -3,12 +3,13 @@ import numpy as np
 
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
+from config import my_config
 
 class AlbumentationsTransform:
-    def __init__(self, is_train: bool = True, size: tuple = (224, 224)):
+    def __init__(self, is_train: bool = True):
         # 공통 변환 설정: 이미지 리사이즈, 정규화, 텐서 변환
         common_transforms = [
-            A.Resize(size),  # 이미지를 224x224 크기로 리사이즈
+            A.Resize(my_config.image_size),  # 이미지를 224x224 크기로 리사이즈
             A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),  # 정규화
             ToTensorV2()  # albumentations에서 제공하는 PyTorch 텐서 변환
         ]
