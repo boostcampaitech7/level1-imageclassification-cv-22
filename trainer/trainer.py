@@ -38,6 +38,8 @@ class Trainer:
         os.makedirs(self.result_path, exist_ok=True)
 
         # 현재 에폭 모델 저장
+        model_path = os.path.join(self.result_path, self.model.model_name)
+        os.makedirs(model_path, exist_ok=True)
         current_model_path = os.path.join(self.result_path, f'model_epoch_{epoch}_loss_{loss:.4f}.pt')
         torch.save(self.model.state_dict(), current_model_path)
 
