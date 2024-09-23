@@ -14,13 +14,13 @@ class TransformSelector:
         else:
             raise ValueError("Unknown transformation library specified.")
 
-    def get_transform(self, is_train: bool):
+    def get_transform(self, is_train: bool, size: tuple):
         
         # 선택된 라이브러리에 따라 적절한 변환 객체를 생성
         if self.transform_type == 'torchvision':
-            transform = TorchvisionTransform(is_train=is_train)
+            transform = TorchvisionTransform(is_train=is_train, size=size)
         
         elif self.transform_type == 'albumentations':
-            transform = AlbumentationsTransform(is_train=is_train)
+            transform = AlbumentationsTransform(is_train=is_train, size=size)
         
         return transform

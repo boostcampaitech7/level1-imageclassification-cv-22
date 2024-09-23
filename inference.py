@@ -17,6 +17,7 @@ class ModelInference:
                  save_result_path, 
                  model_name='resnet18', 
                  batch_size=64,
+                 size=(224, 224),
                  num_classes=500, 
                  pretrained=False,
                  num_workers=6):
@@ -26,6 +27,7 @@ class ModelInference:
         self.save_result_path = save_result_path
         self.model_name = model_name
         self.batch_size = batch_size
+        self.size = size
         self.num_classes = num_classes
         self.pretrained = pretrained
         self.num_workers = num_workers
@@ -38,7 +40,7 @@ class ModelInference:
 
         # Set up transformations for test data.
         transform_selector = TransformSelector(transform_type="torchvision")
-        test_transform = transform_selector.get_transform(is_train=False)
+        test_transform = transform_selector.get_transform(is_train=False, size=self.size)
 
         # Create dataset instance for test data.
         test_dataset = CustomDataset(

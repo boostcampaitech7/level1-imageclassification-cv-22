@@ -17,6 +17,7 @@ class ModelTrainer:
                  save_result_path,
                  model_name='resnet18',
                  batch_size=64,
+                 size=(224, 224),
                  lr=0.001,
                  pretrained=True,
                  epochs=5,  
@@ -32,6 +33,7 @@ class ModelTrainer:
         self.save_result_path = save_result_path
         self.model_name = model_name
         self.batch_size = batch_size
+        self.size = size
         self.lr = lr
         self.pretrained = pretrained
         self.epochs = epochs
@@ -66,8 +68,8 @@ class ModelTrainer:
 
         # Set up transformations for training and validation.
         transform_selector = TransformSelector(transform_type="torchvision")
-        train_transform = transform_selector.get_transform(is_train=True)
-        val_transform = transform_selector.get_transform(is_train=False)
+        train_transform = transform_selector.get_transform(is_train=True, size=self.size)
+        val_transform = transform_selector.get_transform(is_train=False, size=self.size)
 
         # Create dataset instances for training and validation data.
         train_dataset = CustomDataset(

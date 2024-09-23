@@ -3,14 +3,13 @@ import numpy as np
 from PIL import Image
 
 from torchvision import transforms
-from PIL import Image
 
 class TorchvisionTransform:
 
-    def __init__(self, is_train: bool = True):
+    def __init__(self, is_train: bool = True, size: tuple=(224, 224)):
         # 공통 변환 설정: 이미지 리사이즈, 텐서 변환, 정규화
         common_transforms = [
-            transforms.Resize((224, 224)),  # 이미지를 224x224 크기로 리사이즈
+            transforms.Resize(size),  # 이미지를 224x224 크기로 리사이즈
             transforms.ToTensor(),  # 이미지를 PyTorch 텐서로 변환
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # 정규화
         ]

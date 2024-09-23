@@ -9,6 +9,7 @@ test_batch_size = 64
 
 lr = 0.001
 epochs = 10
+size = (384, 384)
 
 optimizer_type = 'Adam'
 scheduler_type = 'StepLR'
@@ -34,6 +35,7 @@ if __name__ == "__main__":
             save_result_path="/data/ephemeral/home/results",
             model_name= model_name,
             batch_size= train_batch_size,
+            size=size,
             lr= lr,
             pretrained=train_pretrained,
             epochs=epochs,
@@ -59,6 +61,7 @@ if __name__ == "__main__":
             save_result_path="/data/ephemeral/home/results",
             model_name= model_name,
             batch_size= test_batch_size,
+            size=size,
             num_classes= num_classes,
             pretrained= test_pretrained,
             num_workers=num_workers
