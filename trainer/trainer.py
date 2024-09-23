@@ -3,7 +3,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
+import csv
 from tqdm.auto import tqdm
 from torch.utils.data import DataLoader
 
@@ -63,13 +63,9 @@ class Trainer:
             torch.save(self.model.state_dict(), best_model_path)
             print(f"Save {epoch+1}epoch result. Loss = {loss:.4f}")
 
-    def train_epoch(self) -> float:
-        # 한 에폭 동안의 훈련을 진행
+    def train_epoch(self):
         self.model.train()
-        
         total_loss = 0.0
-        correct_predictions = 0
-        total_samples = 0
         progress_bar = tqdm(self.train_loader, desc="Training", leave=False)
         
         for images, targets in progress_bar:
@@ -79,20 +75,18 @@ class Trainer:
             loss = self.loss_fn(outputs, targets)
             loss.backward()
             self.optimizer.step()
-            self.scheduler.step()
             total_loss += loss.item()
-            
-            # 정확도 계산
-            _, predicted = torch.max(outputs, 1)
-            correct_predictions += (predicted == targets).sum().item()
-            total_samples += targets.size(0)
-            
             progress_bar.set_postfix(loss=loss.item())
         
-        accuracy = correct_predictions / total_samples
-        print(f"Train Accuracy: {accuracy:.4f}")
+        avg_loss = total_loss / len(self.train_loader)
         
-        return total_loss / len(self.train_loader)
+        # ReduceLROnPlateau 스케줄러의 경우, 메트릭을 전달
+        if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+            self.scheduler.step(avg_loss)
+        else:
+            self.scheduler.step()
+        
+        return avg_loss
 
     def validate(self) -> float:
         # 모델의 검증을 진행
@@ -101,6 +95,7 @@ class Trainer:
         total_loss = 0.0
         correct_predictions = 0
         total_samples = 0
+        incorrect_samples = []  # 틀린 샘플을 저장할 리스트
         progress_bar = tqdm(self.val_loader, desc="Validating", leave=False)
         
         with torch.no_grad():
@@ -114,18 +109,38 @@ class Trainer:
                 _, predicted = torch.max(outputs, 1)
                 correct_predictions += (predicted == targets).sum().item()
                 total_samples += targets.size(0)
-                
+
+                # 마지막 에포크에서 틀린 샘플 저장
+                if self.current_epoch == self.epochs - 1:
+                    incorrect_indices = (predicted != targets).nonzero(as_tuple=True)[0]
+                    for idx in incorrect_indices:
+                        incorrect_samples.append((targets[idx].cpu().item(), predicted[idx].cpu().item()))
+
                 progress_bar.set_postfix(loss=loss.item())
+                
         
         accuracy = correct_predictions / total_samples
         self.current_accuracy = accuracy
         print(f"Validation Accuracy: {accuracy:.4f}")
+        
+        # wandb 로그 기록
+        wandb.log({"val_loss": total_loss / len(self.val_loader), "val_accuracy": accuracy})
+        
+        # 마지막 에포크에서 틀린 샘플을 CSV로 저장
+        if self.current_epoch == self.epochs - 1:  # 마지막 에포크인지 확인
+            csv_path = os.path.join(self.result_path, f'incorrect_samples_{self.model.model_name}.csv')
+            with open(csv_path, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(['True Label', 'Predicted Label'])  # 헤더 수정
+                for true_label, predicted_label in incorrect_samples:
+                    writer.writerow([true_label, predicted_label])  # 이미지 대신 라벨값 저장
         
         return total_loss / len(self.val_loader)
 
     def train(self) -> None:
         # 전체 훈련 과정을 관리
         for epoch in range(self.epochs):
+            self.current_epoch = epoch  # 현재 에포크 저장
             print(f"Epoch {epoch+1}/{self.epochs}")
             
             train_loss = self.train_epoch()
@@ -133,6 +148,7 @@ class Trainer:
             print(f"Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Validation Loss: {val_loss:.4f}\n")
 
             self.save_model(epoch, val_loss)
+            self.scheduler.step(val_loss)
 
             wandb.log({"train_loss":train_loss, "val_loss":val_loss, "val_accuracy":self.current_accuracy})
 
