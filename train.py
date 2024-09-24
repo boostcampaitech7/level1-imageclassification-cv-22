@@ -10,6 +10,8 @@ from transform.transform_selector import TransformSelector
 from model.model_selector import ModelSelector
 from loss.loss import Loss
 
+from config import my_config
+
 class ModelTrainer:
     def __init__(self, 
                  traindata_dir, 
@@ -19,13 +21,14 @@ class ModelTrainer:
                  batch_size=64,
                  lr=0.001,
                  pretrained=True,
-                 epochs=5,
+                 epochs=5,  
                  optimizer_type='Adam',
                  scheduler_gamma=0.1,
                  scheduler_step_multiplier=2,
                  scheduler_type='StepLR',
                  scheduler_t_max=10,
-                 num_workers=6):
+                 num_workers=6,
+                 patience=4):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.traindata_dir = traindata_dir
         self.traindata_info_file = traindata_info_file
@@ -48,6 +51,7 @@ class ModelTrainer:
         self.val_loader = None
         self.loss_fn = None
         self.num_classes = 0
+        self.patience = patience
 
         
     def prepare_data(self):
@@ -65,7 +69,7 @@ class ModelTrainer:
         )
 
         # Set up transformations for training and validation.
-        transform_selector = TransformSelector(transform_type="albumentations")
+        transform_selector = TransformSelector(transform_type=my_config.transform_type)
         train_transform = transform_selector.get_transform(is_train=True)
         val_transform = transform_selector.get_transform(is_train=False)
 
@@ -163,6 +167,7 @@ class ModelTrainer:
             loss_fn=self.loss_fn,
             epochs=self.epochs,
             result_path=self.save_result_path,
+            patience=self.patience
         )
 
         # Start training.

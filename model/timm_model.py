@@ -18,6 +18,7 @@ class TimmModel(nn.Module):
             pretrained=pretrained, 
             num_classes=num_classes
         )
+        self.model_name = model_name
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         

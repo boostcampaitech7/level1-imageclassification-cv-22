@@ -37,7 +37,7 @@ class ModelInference:
         test_info = pd.read_csv(self.testdata_info_file)
 
         # Set up transformations for test data.
-        transform_selector = TransformSelector(transform_type="albumentations")
+        transform_selector = TransformSelector(transform_type="torchvision")
         test_transform = transform_selector.get_transform(is_train=False)
 
         # Create dataset instance for test data.
@@ -69,7 +69,7 @@ class ModelInference:
         self.model = model_selector.get_model()
 
         # Load the best model checkpoint.
-        model_path = os.path.join(self.save_result_path, "best_model.pt")
+        model_path = os.path.join(self.save_result_path, self.model.model_name,"best_model.pt")
         self.model.load_state_dict(torch.load(model_path, map_location='cpu'))
 
         # Move the model to the selected device.
@@ -97,7 +97,7 @@ class ModelInference:
         # Save the predictions to the test_info dataframe and to a CSV file
         test_info['target'] = predictions
         test_info = test_info.reset_index().rename(columns={"index": "ID"})
-        test_info.to_csv("/data/ephemeral/home/baseline_code/output.csv", index=False)
+        test_info.to_csv(f"/data/ephemeral/home/results/{self.model.model_name}/output.csv", index=False)
 
     def run_inference(self):
         # Prepare data

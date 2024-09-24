@@ -1,5 +1,6 @@
 from .torchvision_transform import TorchvisionTransform
 from .albumentations_transform import AlbumentationsTransform
+from .autoaugment import AutoaugmentTransform
 
 class TransformSelector:
     """
@@ -7,8 +8,7 @@ class TransformSelector:
     """
     def __init__(self, transform_type: str):
 
-        # 지원하는 변환 라이브러리인지 확인
-        if transform_type in ["torchvision", "albumentations"]:
+        if transform_type in ["torchvision", "albumentations", "autoaugment"]:
             self.transform_type = transform_type
         
         else:
@@ -22,5 +22,8 @@ class TransformSelector:
         
         elif self.transform_type == 'albumentations':
             transform = AlbumentationsTransform(is_train=is_train)
+        
+        elif self.transform_type == 'autoaugment':
+            transform = AutoaugmentTransform(is_train=is_train)
         
         return transform
