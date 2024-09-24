@@ -28,7 +28,7 @@ test_pretrained = False
 ###################################
 
 # Wandb 설정 !!!!!!
-wandb.init(project="deit_coatnet_384", name=f"{model_name}")
+wandb.init(project="beit", name=f"{model_name}")
 
 # wandb에 변수 기록
 wandb.config.update(my_config.get_config())
