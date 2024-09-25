@@ -3,9 +3,9 @@ import albumentations as A
 
 class MyConfig:
     def __init__(self):
-        self.model_name = 'beitv2_base_patch16_224_in22k'
-        self.train_batch_size = 32
-        self.test_batch_size = 32
+        self.model_name = 'beitv2_large_patch16_224'
+        self.train_batch_size = 16
+        self.test_batch_size = 16
         self.lr = 0.00001
         self.epochs = 30
         self.num_classes = 500
