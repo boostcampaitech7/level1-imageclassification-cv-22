@@ -1,7 +1,8 @@
 import os
 import pandas as pd
 from tqdm import tqdm
-
+import timm
+import numpy as np
 import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
@@ -99,7 +100,7 @@ class ModelEnsemble:
         predictions = []
         with torch.no_grad():  # Disable gradient computation for inference
             for images in tqdm(self.test_loader):
-                ensemble_logits = None
+                ensemble_preds = []
 
                 # Get predictions from each model
                 for i, model in enumerate(self.models):
@@ -113,21 +114,20 @@ class ModelEnsemble:
 
                     # Get logits from the current model
                     logits = model(resized_images)
-                    logits = F.softmax(logits, dim=1)  # Convert logits to probabilities
+                    preds = logits.argmax(dim=1)  # Get predicted class (hard decision)
+                    ensemble_preds.append(preds.cpu().detach().numpy())  # Move to CPU and store
 
-                    # Accumulate logits for averaging (ensemble by averaging probabilities)
-                    if ensemble_logits is None:
-                        ensemble_logits = logits
-                    else:
-                        ensemble_logits += logits
+                # Perform majority voting across the model predictions
+                ensemble_preds = np.array(ensemble_preds)
+                final_preds = []
+                for i in range(ensemble_preds.shape[1]):
+                    # Perform majority vote for each sample
+                    sample_preds = ensemble_preds[:, i]
+                    final_pred = np.bincount(sample_preds).argmax()  # Get the majority vote
+                    final_preds.append(final_pred)
                 
-                # Average the logits from all models
-                ensemble_logits /= len(self.models)
+                predictions.extend(final_preds)
 
-                # Get the predicted class based on the ensemble output
-                preds = ensemble_logits.argmax(dim=1)
-                predictions.extend(preds.cpu().detach().numpy())  # Move to CPU and convert to numpy
-        
         return predictions
 
     def save_predictions(self, predictions, test_info):
