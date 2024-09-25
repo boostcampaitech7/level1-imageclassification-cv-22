@@ -1,8 +1,9 @@
 from train import ModelTrainer
 from inference import ModelInference
+from ensemble import ModelEnsemble
 import torch
 from config import my_config
-import wandb
+#import wandb
 import random
 import numpy as np
 
@@ -21,13 +22,23 @@ scheduler_step_multiplier = my_config.scheduler_step_multiplier # StepLR에서 �
 scheduler_t_max = my_config.scheduler_t_max # CosineAnnealingLR에서 사용
 num_workers = my_config.num_workers
 
+num_classes = my_config.num_classes
+
+train_pretrained = True
+test_pretrained = False
+
+model_configs = [{'name':'beitv2_large_patch16_224', 'input_size':(224, 224)},
+                 {'name':'convnext_large_mlp.clip_laion2b_augreg_ft_in1k_384', 'input_size':(384, 384)},
+                 {'name':'deit_base_distilled_patch16_384', 'input_size':(384, 384)},
+                 {'name':'eva02_large_patch14_448', 'input_size':(448, 448)}]
+
 ###################################
 
 # Wandb 설정 !!!!!!
-wandb.init(project="deit_coatnet_384", name=f"{model_name}")
+#wandb.init(project="deit_coatnet_384", name=f"{model_name}")
 
 # wandb에 변수 기록
-wandb.config.update(my_config.get_config())
+#wandb.config.update(my_config.get_config())
 
 def set_seed(seed):
     random.seed(seed)
@@ -45,7 +56,7 @@ set_seed(42)
 if __name__ == "__main__":
     # Training process
     torch.cuda.empty_cache()
-    train_model = True  # Set this to False if you don't want to train
+    train_model = False # Set this to False if you don't want to train
     
     if train_model:
         print("Starting training process...")
@@ -71,7 +82,7 @@ if __name__ == "__main__":
         print("Training completed.")
 
     # Inference process
-    run_inference = True  # Set this to False if you don't want to run inference
+    run_inference = False  # Set this to False if you don't want to run inference
     
     if run_inference:
         print("Starting inference process...")
@@ -80,6 +91,24 @@ if __name__ == "__main__":
             testdata_info_file="/data/ephemeral/home/data/test.csv",
             save_result_path="/data/ephemeral/home/results",
             model_name= model_name,
+            batch_size= test_batch_size,
+            num_classes= num_classes,
+            pretrained= test_pretrained,
+            num_workers=num_workers
+        )
+        # Run the inference process
+        inference_runner.run_inference()
+        print("Inference completed.")
+    
+    # Ensemble process
+    run_ensemble = True
+    if run_ensemble:
+        print("Starting inference process...")
+        inference_runner = ModelEnsemble(
+            testdata_dir="/data/ephemeral/home/data/test",
+            testdata_info_file="/data/ephemeral/home/data/test.csv",
+            save_result_path="/data/ephemeral/home/results",
+            model_configs= model_configs,
             batch_size= test_batch_size,
             num_classes= num_classes,
             pretrained= test_pretrained,
