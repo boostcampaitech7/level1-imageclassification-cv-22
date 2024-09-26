@@ -10,7 +10,7 @@ class MyConfig:
         self.train_batch_size = 16
         self.test_batch_size = 16
         self.lr = 0.00001
-        self.epochs = 20
+        self.epochs = 30
         self.num_classes = 500
         self.num_workers = 6
 
