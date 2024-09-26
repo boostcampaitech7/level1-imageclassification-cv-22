@@ -18,10 +18,7 @@ class ModelEnsemble:
                  testdata_info_file, 
                  save_result_path, 
                  model_configs=[{'name':'beitv2_large_patch16_224', 'input_size':(224, 224)},
-                                {'name':'convnext_large_mlp.clip_laion2b_augreg_ft_in1k_384', 'input_size':(384, 384)},
-                                {'name':'deit_base_distilled_patch16_384', 'input_size':(384, 384)},
-                                {'name':'eva02_large_patch14_448', 'input_size':(448, 448)}], 
-
+                                {'name':'convnext_large_mlp.clip_laion2b_augreg_ft_in1k_384', 'input_size':(384, 384)}],
                  batch_size=64,
                  num_classes=500, 
                  pretrained=False,
@@ -30,13 +27,13 @@ class ModelEnsemble:
         self.testdata_dir = testdata_dir
         self.testdata_info_file = testdata_info_file
         self.save_result_path = save_result_path
-        self.model_configs = model_configs
+        self.model_configs = model_configs # List of dicts with model names and input sizes
         self.batch_size = batch_size
         self.num_classes = num_classes
         self.pretrained = pretrained
         self.num_workers = num_workers
-        self.models = []
-        self.transforms = []
+        self.models = [] # Store modles
+        self.transforms = [] # Store corresponding transforms
         self.test_loader = None
 
     def prepare_data(self):
@@ -66,6 +63,7 @@ class ModelEnsemble:
         return test_info
 
     def prepare_model(self):
+        # Loop through model configs to load each model and define specific transforms
         for config in self.model_configs:
             model_name = config['name']
             input_size = config['input_size']
@@ -100,6 +98,7 @@ class ModelEnsemble:
         predictions = []
         with torch.no_grad():  # Disable gradient computation for inference
             for images in tqdm(self.test_loader):
+                # Initialize logits container for ensembling (e.g., sum of logits for averaging)
                 ensemble_preds = []
 
                 # Get predictions from each model

@@ -8,29 +8,32 @@ import random
 import numpy as np
 
 ###################################
+# Model
 model_name = my_config.model_name
+
+# Hyperparameters
 train_batch_size = my_config.train_batch_size
 test_batch_size = my_config.test_batch_size
-
 lr = my_config.lr
 epochs = my_config.epochs
+num_classes = my_config.num_classes
+num_workers = my_config.num_workers
+
+# Optimizer
 optimizer_type = my_config.optimizer_type
-scheduler_type = my_config.scheduler_type
 patience = my_config.patience
+
+# Scheduler
+scheduler_type = my_config.scheduler_type
 scheduler_gamma = my_config.scheduler_gamma # StepLR, ReduceLROnPlateau에서 사용
 scheduler_step_multiplier = my_config.scheduler_step_multiplier # StepLR에서 사용
 scheduler_t_max = my_config.scheduler_t_max # CosineAnnealingLR에서 사용
-num_workers = my_config.num_workers
 
-num_classes = my_config.num_classes
+# Ensemble
+model_configs = my_config.model_configs
 
 train_pretrained = True
 test_pretrained = False
-
-model_configs = [{'name':'beitv2_large_patch16_224', 'input_size':(224, 224)},
-                 {'name':'convnext_large_mlp.clip_laion2b_augreg_ft_in1k_384', 'input_size':(384, 384)},
-                 {'name':'deit_base_distilled_patch16_384', 'input_size':(384, 384)},
-                 {'name':'eva02_large_patch14_448', 'input_size':(448, 448)}]
 
 ###################################
 
