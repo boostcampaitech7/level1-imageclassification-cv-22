@@ -47,3 +47,4 @@ class CustomDataset(Dataset):
         else:
             target = self.targets[index]
             return image, target
+        
