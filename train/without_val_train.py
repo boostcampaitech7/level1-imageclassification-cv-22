@@ -105,7 +105,7 @@ class ModelTrainer:
             self.optimizer = optim.AdamW(
                 self.model.parameters(), 
                 lr=self.lr,
-                weight_decay=5e-2  # 필요에 따라 weight_decay 조정
+                weight_decay=5e-2  # 필요에 따라 weight_decay 조정 
             )
         else:
             raise ValueError(f"Unsupported optimizer type: {self.optimizer_type}")
