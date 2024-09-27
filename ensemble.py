@@ -185,3 +185,4 @@ class ModelEnsemble:
         self.prepare_model()
         predictions = self.inference()
         self.save_predictions(predictions, test_info)
+        
