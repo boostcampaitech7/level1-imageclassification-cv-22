@@ -38,3 +38,4 @@ class Loss(nn.Module):
         """
         
         return self.loss_fn(outputs, targets)
+    
