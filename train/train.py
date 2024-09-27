@@ -55,7 +55,7 @@ class ModelTrainer:
         self.num_classes = 0
         self.patience = patience
 
-    # 데이터 분할, transform 지정, 데이터셋 정의 및 불러오기    
+    # 데이터 분할, transform 지정, 데이터셋 정의 및 불러오기     
     def prepare_data(self):
         train_info = pd.read_csv(self.traindata_info_file)
         self.num_classes = len(train_info['target'].unique())
