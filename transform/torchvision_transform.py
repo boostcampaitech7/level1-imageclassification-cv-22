@@ -12,7 +12,7 @@ class TorchvisionTransform:
 
     Args:
         is_train (bool): 훈련 중인지 여부를 결정하는 플래그. True일 경우 추가적인 데이터 증강이 적용됨.
-        size (tuple): 이미지를 리사이즈할 크기. 기본값은 (224, 224).
+        size (tuple): 이미지를 리사이즈할 크기. 기본값은 (224, 224). 
     """
 
     def __init__(self, is_train: bool = True, size: tuple = (224, 224)):
