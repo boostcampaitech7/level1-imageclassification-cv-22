@@ -58,7 +58,7 @@ $Accuracy = \dfrac{\text{모델이 올바르게 예측한 샘플 수}}{\text{전
 - 색상이나 세부적인 질감 없이 기본적인 윤곽선과 형태로 표현된다
 - 같은 객체를 나타내는 스케치라도 다양한 시각과 표현 스타일을 반영하기에 그린 사람에 따라 매우 다를 수 있다
 
-### Tree
+### Data Tree
 
 ```plaintext
 data/
@@ -117,55 +117,3 @@ Team name : CV_22조
 - gradient accumulation을 통해 더 큰 batch size로 학습시키기
 
 ---
-
-dataset - [feat] Implement custom dataset class
-
-loss - [feat] Add custom loss functions for model optimization
-
-model - [feat] Build and integrate model architectures
-
-train - [feat] Implement training loop and optimization logic
-
-trainer - [feat] Add trainer class for managing training process
-
-transform - [feat] Implement data augmentation and transformation
-
-gitignore - [chore] Add wandb and other config files to .gitignore 
-
-readmd.md - [docs] Update README with project instructions and overview
-
-config.py **-** [feat] Add configuration settings for model and training
-
-ensemble - [feat] Implement ensemble methods for model inference
-
-inference - [feat] Implement model inference logic
-
-main - [feat] Main script to run training, inference, ensemble
-
-requirement.txt - [chore] Add required libraries and dependencies
-
-•	**dataset** - [feat] 커스텀 데이터셋 클래스 구현
-
-•	**loss** - [feat] 모델 최적화를 위한 커스텀 손실 함수 추가
-
-•	**model** - [feat] 모델 아키텍처 구축 및 통합
-
-•	**train** - [feat] 학습 루프 및 최적화 로직 구현
-
-•	**trainer** - [feat] 학습 과정 관리를 위한 트레이너 클래스 추가
-
-•	**transform** - [feat] 데이터 증강 및 변환 기능 구현
-
-•	**gitignore** - [chore] wandb 및 기타 설정 파일을 .gitignore에 추가
-
-•	**README.md** - [docs] 프로젝트 지침 및 개요를 README에 업데이트
-
-•	**config.py** - [feat] 모델 및 학습 설정 추가
-
-•	**ensemble** - [feat] 모델 앙상블을 위한 추론 메소드 구현
-
-•	**inference** - [feat] 모델 추론 로직 구현
-
-•	**main** - [feat] 학습, 추론, 앙상블 실행을 위한 메인 스크립트
-
-•	**requirements.txt** - [chore] 필수 라이브러리 및 의존성 추가
