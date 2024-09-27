@@ -1,7 +1,7 @@
-# Readme
-
 # Sketch 이미지 데이터 분류 경진대회
-![image](https://github.com/user-attachments/assets/0c6e68c2-e624-4f81-ab6b-268a19843d24)
+<p align="center">
+<img src="https://github.com/user-attachments/assets/0c6e68c2-e624-4f81-ab6b-268a19843d24" width="90%" height="90%"/>
+</p>
 
 ## 1. Competiton Info
 
@@ -93,9 +93,7 @@ data/
 
 ### Modeling Result
 <p align="center">
-
-<img src="" width="%" height="%"/>
-
+<img src="https://github.com/user-attachments/assets/ab121c1d-7470-4b0e-bc70-de560de1d7bb" width="80%" height="80%"/>
 </p>
 
 ## 6. Result
@@ -103,9 +101,7 @@ data/
 ### Leader Board
 Team name : CV_22조
 <p align="center">
-
-<img src="" width="%" height="%"/>
-
+<img src="https://github.com/user-attachments/assets/d6e20035-ff0b-4aae-9677-f04965d45233" width="70%" height="70%"/>
 </p>
 
 ### Areas for improvement
@@ -113,10 +109,7 @@ Team name : CV_22조
 - 워터마크, 문자 제거를 적용해서 모델 성능을 측정해 보기
 - gradient accumulation을 통해 더 큰 batch size로 학습시키기
 - sketch image의 위치를 detection해서 그 부분만 crop해서 학습에 사용할 수 있도록 개선하기
-
-- 
 - gradient accumulation을 통해 더 큰 batch size로 학습시키기
-- sketch imag
 
 ---
 
