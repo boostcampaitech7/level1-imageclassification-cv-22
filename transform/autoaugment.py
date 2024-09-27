@@ -10,7 +10,7 @@ use_grayscale = True
 class AutoaugmentTransform:
 
     """
-    Torchvision의 transforms 모듈을 사용하여 AutoAugment 및 기타 변환을 적용하는 클래스.
+    Torchvision의 transforms 모듈을 사용하여 AutoAugment 및 기타 변환을 적용하는 클래스. 
 
     Args:
         is_train (bool): 훈련 중인지 여부를 결정하는 플래그. 기본값은 True로, 훈련 모드에서는 추가적인 데이터 증강이 적용됨.
