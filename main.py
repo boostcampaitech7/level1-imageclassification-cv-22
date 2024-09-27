@@ -7,7 +7,7 @@ from config import my_config
 from ensemble import ModelEnsemble
 from inference import ModelInference
 from train.train import ModelTrainer
-# 학습 시 val_data를 사용하지 않은 ModelTrainer
+# 학습 시 val_data를 사용하지 않은 ModelTrainer 
 #from train.without_val_train import ModelTrainer
 
 model_name = my_config.model_name
