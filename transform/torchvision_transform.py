@@ -8,7 +8,7 @@ from torchvision import transforms
 class TorchvisionTransform:
 
     """
-    Torchvision의 transforms 모듈을 사용하여 이미지에 다양한 변환을 적용하는 클래스.
+    Torchvision의 transforms 모듈을 사용하여 이미지에 다양한 변환을 적용하는 클래스. 
 
     Args:
         is_train (bool): 훈련 중인지 여부를 결정하는 플래그. True일 경우 추가적인 데이터 증강이 적용됨.
