@@ -4,7 +4,7 @@ import torch.nn as nn
 class SimpleCNN(nn.Module):
 
     """
-    간단한 CNN 아키텍처를 정의하는 클래스.
+    간단한 CNN 아키텍처를 정의하는 클래스.  
 
     Args:
         num_classes (int): 분류할 클래스의 개수.
