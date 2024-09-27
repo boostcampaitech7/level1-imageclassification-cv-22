@@ -25,12 +25,15 @@
 
 $Accuracy = \dfrac{\text{모델이 올바르게 예측한 샘플 수}}{\text{전체 샘플 수}}$
 
-## MEMBERS
+## 2. Team Info
+
+### MEMBERS
+
 | <img src="https://github.com/user-attachments/assets/b1591118-babe-4de5-9242-793d265edaa4" width="200" height="200"/> | <img src="https://github.com/user-attachments/assets/ac22262e-0922-4dfe-876f-8a3ec2a1f25a" width="200" height="200"/> | <img src="https://github.com/user-attachments/assets/970d2e93-5b3a-4721-9bbd-5bab288e4644" width="200" height="200"/> | <img src="https://github.com/user-attachments/assets/91875b0b-a147-4115-aa41-785f1a351820" width="200" height="200"/> | <img src="https://github.com/user-attachments/assets/51f2b716-ed28-4731-ac3b-c32973f83728" width="200" height="200"/> |
 | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: |
 |            [김예진](https://github.com/yeyechu)            |            [배형준](https://github.com/BaeHyungJoon)             |            [송재현](https://github.com/mongsam2)             |            [이재효](https://github.com/jxxhyo)             |            [차성연](https://github.com/MICHAA4)             |
 
-## 2. Project Objective and Direction
+### Project Objective and Direction
 
 - 특정한 방향 없이 자유롭게 탐색하되, 기본에 충실하기
     - 처음 참가하는 대회이기 때문에 전반적인 프로세스를 이해하고 기본 지식을 습득하고자 하였다
@@ -42,20 +45,20 @@ $Accuracy = \dfrac{\text{모델이 올바르게 예측한 샘플 수}}{\text{전
     - 클린 코드를 지향하는 공통의 학습 템플릿 설계를 목표로 하였다
     - 실험 기록 공유, 체계 구축 등 효율적인 커뮤니케이션 방법을 모색하였다
 
-## 3. Team Component
+### Team Component
 - 김예진 : 데이터 증강 실험(RGB와 Grayscale), 모델 설계 및 실험, 하이퍼파라미터 실험, 실험 관리 툴 제작
 - 배형준 : 베이스라인 코드 설계(without_val), 모델 설계 및 실험, 학습 체계 구축
 - 송재현 : 데이터 증강 실험(Cutmix), 베이스라인 코드 설계(Config), 모델 설계 및 실험
 - 이재효 : 베이스라인 코드 설계(전체, Ensemble), 모델 설계 및 실험, 하이퍼파라미터 실험
 - 차성연 : 데이터 증강 실험(워터마크, 문자 제거), 베이스라인 코드 설계(전체, Ensemble), 모델 설계 및 실험, 실험 관리 툴 제작
 
-## 4. Data Description
+## 3. Data Description
 - 주로 사람의 손으로 그려진 드로잉이나 스케치로 구성되어 있다
 - 객체, 동물, 인물, 풍경 등 다양한 카테고리에 걸친 추상적이고 간소화된 이미지들로 이루어져 있다
 - 색상이나 세부적인 질감 없이 기본적인 윤곽선과 형태로 표현된다
 - 같은 객체를 나타내는 스케치라도 다양한 시각과 표현 스타일을 반영하기에 그린 사람에 따라 매우 다를 수 있다
 
-#### - 데이터 구성
+### Tree
 
 ```plaintext
 data/
@@ -76,7 +79,6 @@ data/
 │   ├── ... 
 ```
 
-###  EDA
 - 약 500개의 클래스가 존재한다
 - 모든 이미지는 JPEG 형식이며, 크기는 서로 다를 수 있지만 대부분 흑백 스케치 이미지로 구성되어 있다
 - 클래스별로 약 29~31개의 스케치, 이미지를 포함하고 있어, 데이터 불균형 문제는 거의 존재하지 않는다
@@ -84,19 +86,22 @@ data/
 - 스케치 이미지라 RGB 값이 200에서 250사이에 몰려 있고, 색상 정보를 기반으로 분류하는 것은 크게 중요하지 않을 수 있다
 - 대신, 형태 정보에 더 중점을 둔 모델을 설계하는 것이 적합할 수 있다
 
-## 5. Modeling
+## 4. Modeling
 
 ### Model descrition
 
-| beitv2_large_patch16_224 | deit_base_distilled_patch16_384 | eva02_base_patch14_448 | eva02_large_patch14_448 |
-| --- | --- | --- | --- |
+| beitv2_large_patch16_224 | deit_base_distilled_patch16_384 |
+| --- | --- |
+| eva02_base_patch14_448 | eva02_large_patch14_448 |
 
 ### Modeling Result
-<p align="center">
-<img src="https://github.com/user-attachments/assets/ab121c1d-7470-4b0e-bc70-de560de1d7bb" width="80%" height="80%"/>
-</p>
 
-## 6. Result
+| Model | Accuracy |
+| --- | --- |
+| Ensemble | 0.9300 |
+| eva02_base_patch14_448 | 0.9160 |
+
+## 5. Result
 
 ### Leader Board
 Team name : CV_22조
@@ -127,7 +132,7 @@ transform - [feat] Implement data augmentation and transformation
 
 gitignore - [chore] Add wandb and other config files to .gitignore 
 
-[readmd.md](http://readmd.md) - [docs] Update README with project instructions and overview
+readmd.md - [docs] Update README with project instructions and overview
 
 config.py **-** [feat] Add configuration settings for model and training
 
