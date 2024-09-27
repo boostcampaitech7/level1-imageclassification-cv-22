@@ -21,7 +21,7 @@ class ModelInference:
                  num_workers=6):
         
         """
-        ModelInference 클래스 초기화 메서드. 모델, 데이터 경로, 배치 크기 등의 설정을 정의합니다.
+        ModelInference 클래스 초기화 메서드. 모델, 데이터 경로, 배치 크기 등의 설정을 정의합니다. 
 
         Args:
             testdata_dir (str): 테스트 데이터 디렉토리 경로.
