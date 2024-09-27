@@ -5,7 +5,7 @@ from .albumentations_transform import AlbumentationsTransform
 class TransformSelector:
 
     """
-    주어진 변환 유형에 따라 적절한 데이터 변환 클래스를 선택하는 클래스.
+    주어진 변환 유형에 따라 적절한 데이터 변환 클래스를 선택하는 클래스. 
 
     Args:
         transform_type (str): 사용할 변환 라이브러리의 이름. 'torchvision', 'albumentations', 'autoaugment' 중 하나를 선택해야 함.
