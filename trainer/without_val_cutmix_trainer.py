@@ -12,7 +12,7 @@ from torch.cuda.amp import GradScaler, autocast
 class Trainer:
     
     """
-    검증 데이터를 사용하지 않고, CutMix를 사용하여 모델을 학습하는 클래스입니다.
+    검증 데이터를 사용하지 않고, CutMix를 사용하여 모델을 학습하는 클래스입니다. 
 
     Args:
         model (nn.Module): 학습할 모델.

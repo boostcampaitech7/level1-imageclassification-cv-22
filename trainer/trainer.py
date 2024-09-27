@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 
 class Trainer:
     """
-    Trainer 클래스는 모델 학습을 위한 클래스입니다.
+    Trainer 클래스는 모델 학습을 위한 클래스입니다. 
 
     Args:
         model (nn.Module): 학습할 모델.
