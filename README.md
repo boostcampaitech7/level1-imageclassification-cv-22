@@ -27,7 +27,12 @@ $Accuracy = \dfrac{\text{모델이 올바르게 예측한 샘플 수}}{\text{전
 
 ## MEMBERS
 
-| ![김예진(https://cdn.bootcampkorea.com/bootcamp/Boostcamp.png) | ![배형준](https://cdn.bootcampkorea.com/bootcamp/Boostcamp.png) | ![송재현](https://cdn.bootcampkorea.com/bootcamp/Boostcamp.png) | ![이재효](https://cdn.bootcampkorea.com/bootcamp/Boostcamp.png) | ![차성연](https://cdn.bootcampkorea.com/bootcamp/Boostcamp.png) |
+| ![스크린샷 2024-09-12 121819](https://github.com/user-attachments/assets/b1591118-babe-4de5-9242-793d265edaa4)
+ | ![스크린샷 2024-09-27 134635](https://github.com/user-attachments/assets/ac22262e-0922-4dfe-876f-8a3ec2a1f25a)
+ | ![스크린샷 2024-09-27 134732](https://github.com/user-attachments/assets/970d2e93-5b3a-4721-9bbd-5bab288e4644)
+ | ![스크린샷 2024-09-27 134716](https://github.com/user-attachments/assets/91875b0b-a147-4115-aa41-785f1a351820)
+ | ![스크린샷 2024-09-27 134659](https://github.com/user-attachments/assets/51f2b716-ed28-4731-ac3b-c32973f83728)
+ |
 | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: |
 |            [김예진](https://github.com/yeyechu)             |            [배형준](https://github.com/BaeHyungJoon)             |            [송재현](https://github.com/mongsam2)             |            [이재효](https://github.com/jxxhyo)             |            [차성연](https://github.com/MICHAA4)             |
 
