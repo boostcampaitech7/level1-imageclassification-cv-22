@@ -1,38 +1,64 @@
 import torch
 import numpy as np
-
 import albumentations as A
-from albumentations.pytorch import ToTensorV2
+
 from config import my_config
+from albumentations.pytorch import ToTensorV2
 
 class AlbumentationsTransform:
+
+    """
+    Albumentations 라이브러리를 사용하여 이미지에 다양한 변환을 적용하는 클래스.
+
+    Args:
+        is_train (bool): 훈련 중인지 여부를 결정하는 플래그. 기본값은 True로, 훈련 모드에서는 추가적인 데이터 증강이 적용됨.
+    """
+
     def __init__(self, is_train: bool = True):
-        # 공통 변환 설정: 이미지 리사이즈, 정규화, 텐서 변환
+
+        """
+        클래스 초기화 메서드. 훈련 모드(is_train)가 True일 경우 데이터 증강을 위한 추가 변환들이 포함된 변환 파이프라인을 생성하고,
+        훈련 모드가 아니면 일반적인 변환만 적용됩니다.
+
+        Args:
+            is_train (bool): 훈련 모드 여부를 결정하는 플래그. 기본값은 True.
+        """
+
         common_transforms = [
-            A.Resize(my_config.image_size),  # 이미지를 224x224 크기로 리사이즈
-            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),  # 정규화
-            ToTensorV2()  # albumentations에서 제공하는 PyTorch 텐서 변환
+            A.Resize(my_config.image_size),
+            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ToTensorV2()
         ]
         
         if is_train:
-            # 훈련용 변환: 랜덤 수평 뒤집기, 랜덤 회전, 랜덤 밝기 및 대비 조정 추가
             self.transform = A.Compose(
                 [
-                    A.HorizontalFlip(p=0.5),  # 50% 확률로 이미지를 수평 뒤집기
-                    A.Rotate(limit=15),  # 최대 15도 회전
-                    A.RandomBrightnessContrast(p=0.2),  # 밝기 및 대비 무작위 조정
+                    A.HorizontalFlip(p=0.5),
+                    A.Rotate(limit=15),
+                    A.RandomBrightnessContrast(p=0.2),
                 ] + common_transforms
             )
         else:
-            # 검증/테스트용 변환: 공통 변환만 적용
             self.transform = A.Compose(common_transforms)
 
     def __call__(self, image) -> torch.Tensor:
-        # 이미지가 NumPy 배열인지 확인
+ 
+        """
+        이미지를 입력받아 변환을 적용하고, 변환된 이미지를 반환합니다.
+
+        Args:
+            image (np.ndarray): 변환을 적용할 이미지. NumPy 배열 형식이어야 합니다.
+
+        Returns:
+            torch.Tensor: 변환된 이미지 텐서.
+
+        Raises:
+            TypeError: 입력 이미지가 NumPy 배열이 아닐 경우 발생.
+        """
+
         if not isinstance(image, np.ndarray):
             raise TypeError("Image should be a NumPy array (OpenCV format).")
         
-        # 이미지에 변환 적용 및 결과 반환
-        transformed = self.transform(image=image)  # 이미지에 설정된 변환을 적용
+        transformed = self.transform(image=image)
         
-        return transformed['image']  # 변환된 이미지의 텐서를 반환
+        return transformed['image']

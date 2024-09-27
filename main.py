@@ -1,17 +1,18 @@
-from train import ModelTrainer
-from inference import ModelInference
-from ensemble import ModelEnsemble
 import torch
-from config import my_config
-#import wandb
+import wandb
 import random
 import numpy as np
 
-###################################
-# Model
+from config import my_config
+from ensemble import ModelEnsemble
+from inference import ModelInference
+from train.train import ModelTrainer
+# 학습 시 val_data를 사용하지 않은 ModelTrainer
+#from train.without_val_train import ModelTrainer
+
 model_name = my_config.model_name
 
-# Hyperparameters
+# 하이퍼파라미터
 train_batch_size = my_config.train_batch_size
 test_batch_size = my_config.test_batch_size
 lr = my_config.lr
@@ -19,31 +20,28 @@ epochs = my_config.epochs
 num_classes = my_config.num_classes
 num_workers = my_config.num_workers
 
-# Optimizer
+# 옵티마이저
 optimizer_type = my_config.optimizer_type
 patience = my_config.patience
 
-# Scheduler
+# 스케줄러
 scheduler_type = my_config.scheduler_type
 scheduler_gamma = my_config.scheduler_gamma # StepLR, ReduceLROnPlateau에서 사용
 scheduler_step_multiplier = my_config.scheduler_step_multiplier # StepLR에서 사용
 scheduler_t_max = my_config.scheduler_t_max # CosineAnnealingLR에서 사용
 
-# Ensemble
+# Emsemble
 model_configs = my_config.model_configs
 
+# 학습여부 
 train_pretrained = True
 test_pretrained = False
 
-###################################
-
-# Wandb 설정 !!!!!!
+# wandb
 wandb.init(project="beit", name=f"{model_name}")
+wandb.config.update(my_config.get_config())
 
-# wandb에 변수 기록
-#wandb.config.update(my_config.get_config())
-
-def set_seed(seed):
+def set_seed(seed):    
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -57,10 +55,10 @@ set_seed(42)
 
 
 if __name__ == "__main__":
-    # Training process
     torch.cuda.empty_cache()
-    train_model = False # Set this to False if you don't want to train
-    
+
+    # Train
+    train_model = True
     if train_model:
         print("Starting training process...")
         trainer = ModelTrainer(
@@ -80,12 +78,11 @@ if __name__ == "__main__":
             num_workers=num_workers,
             patience=patience
         )
-        # Run the training process
         trainer.run()
         print("Training completed.")
 
-    # Inference process
-    run_inference = False  # Set this to False if you don't want to run inference
+    # Inference
+    run_inference = True
     
     if run_inference:
         print("Starting inference process...")
@@ -99,12 +96,12 @@ if __name__ == "__main__":
             pretrained= test_pretrained,
             num_workers=num_workers
         )
-        # Run the inference process
         inference_runner.run_inference()
         print("Inference completed.")
     
-    # Ensemble process
-    run_ensemble = True
+    # Ensemble
+    run_ensemble = False
+    
     if run_ensemble:
         print("Starting inference process...")
         inference_runner = ModelEnsemble(
@@ -117,6 +114,5 @@ if __name__ == "__main__":
             pretrained= test_pretrained,
             num_workers=num_workers
         )
-        # Run the inference process
         inference_runner.run_inference()
         print("Inference completed.")

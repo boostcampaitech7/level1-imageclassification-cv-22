@@ -1,16 +1,16 @@
 import torch
 import pandas as pd
-from torch.utils.data import DataLoader
-from sklearn.model_selection import train_test_split
 import torch.optim as optim
 
-from trainer.trainer import Trainer
-from dataset.dataset import CustomDataset
-from transform.transform_selector import TransformSelector
-from model.model_selector import ModelSelector
-from loss.loss import Loss
-
 from config import my_config
+from torch.utils.data import DataLoader
+from dataset.dataset import CustomDataset
+
+from loss.loss import Loss
+from model.model_selector import ModelSelector
+
+from trainer.without_val_cutmix_trainer import Trainer
+from transform.transform_selector import TransformSelector
 
 class ModelTrainer:
     def __init__(self, 
@@ -55,52 +55,31 @@ class ModelTrainer:
 
         
     def prepare_data(self):
-        # Load training data information from the CSV file.
         train_info = pd.read_csv(self.traindata_info_file)
 
-        # Get the number of classes.
         self.num_classes = len(train_info['target'].unique())
 
-        # Split the data into training and validation sets (80/20).
-        train_df, val_df = train_test_split(
-            train_info, 
-            test_size=0.2,
-            stratify=train_info['target']
-        )
+        train_df = train_info
 
-        # Set up transformations for training and validation.
         transform_selector = TransformSelector(transform_type=my_config.transform_type)
         train_transform = transform_selector.get_transform(is_train=True)
-        val_transform = transform_selector.get_transform(is_train=False)
-
-        # Create dataset instances for training and validation data.
+        
         train_dataset = CustomDataset(
             root_dir=self.traindata_dir,
             info_df=train_df,
             transform=train_transform
         )
-        val_dataset = CustomDataset(
-            root_dir=self.traindata_dir,
-            info_df=val_df,
-            transform=val_transform
-        )
-
-        # Set up data loaders for batching and shuffling.
+        
         self.train_loader = DataLoader(
             train_dataset, 
             batch_size=self.batch_size, 
             shuffle=True,
             num_workers=self.num_workers
         )
-        self.val_loader = DataLoader(
-            val_dataset, 
-            batch_size=self.batch_size, 
-            shuffle=False,
-            num_workers=self.num_workers
-        )
+        self.val_loader = None
+
 
     def prepare_model(self):
-        # Initialize the model using the selected architecture and number of classes.
         model_selector = ModelSelector(
             model_type='timm', 
             num_classes=self.num_classes,
@@ -108,12 +87,9 @@ class ModelTrainer:
             pretrained=self.pretrained
         )
         self.model = model_selector.get_model()
-
-        # Move the model to the selected device (GPU/CPU).
         self.model.to(self.device)
 
     def set_optimizer_scheduler(self):
-        # Initialize the optimizer based on the optimizer_type.
         if self.optimizer_type == 'Adam':
             self.optimizer = optim.Adam(
                 self.model.parameters(), 
@@ -125,10 +101,15 @@ class ModelTrainer:
                 lr=self.lr, 
                 momentum=0.9
             )
+        elif self.optimizer_type == 'AdamW':
+            self.optimizer = optim.AdamW(
+                self.model.parameters(), 
+                lr=self.lr,
+                weight_decay=5e-2  # 필요에 따라 weight_decay 조정
+            )
         else:
             raise ValueError(f"Unsupported optimizer type: {self.optimizer_type}")
 
-        # StepLR scheduler configuration.
         scheduler_step_size = len(self.train_loader) * self.scheduler_step_multiplier  # Decay every n epochs
         
         if self.scheduler_type == 'StepLR':
@@ -145,18 +126,30 @@ class ModelTrainer:
         elif self.scheduler_type == 'ReduceLROnPlateau':
             self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(
                 self.optimizer, 
+                mode='min',
                 factor=self.scheduler_gamma, 
-                patience=10
+                patience=self.patience
+            )
+        elif self.scheduler_type == 'CyclicLR':
+            self.scheduler = optim.lr_scheduler.CyclicLR(
+                self.optimizer,
+                base_lr=self.lr / 10,
+                max_lr=self.lr,
+                step_size_up=scheduler_step_size // 2,
+                mode='triangular'
+            )
+        elif self.scheduler_type == 'ExponentialLR':
+            self.scheduler = optim.lr_scheduler.ExponentialLR(
+                self.optimizer,
+                gamma=self.scheduler_gamma
             )
         else:
             raise ValueError(f"Unsupported scheduler type: {self.scheduler_type}")
 
     def set_loss_function(self):
-        # Initialize the loss function.
         self.loss_fn = Loss()
 
     def train(self):
-        # Initialize Trainer with model, optimizer, scheduler, etc.
         trainer = Trainer(
             model=self.model,
             device=self.device,
@@ -170,11 +163,9 @@ class ModelTrainer:
             patience=self.patience
         )
 
-        # Start training.
         trainer.train()
 
     def run(self):
-        # Sequence of steps to run the full training process.
         self.prepare_data()
         self.prepare_model()
         self.set_optimizer_scheduler()
