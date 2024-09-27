@@ -51,7 +51,7 @@ class ModelSelector:
     def get_model(self) -> nn.Module:
 
         """
-        생성된 모델 객체를 반환합니다.
+        생성된 모델 객체를 반환합니다. 
 
         Returns:
             nn.Module: 선택된 모델 객체.

@@ -6,7 +6,7 @@ from torchvision import models
 class TorchvisionModel(nn.Module):
     
     """
-    Torchvision에서 제공하는 사전 훈련된 모델을 사용하는 클래스.
+    Torchvision에서 제공하는 사전 훈련된 모델을 사용하는 클래스. 
 
     Args:
         model_name (str): 사용할 torchvision 모델의 이름.

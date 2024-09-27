@@ -5,7 +5,7 @@ import torch.nn as nn
 class TimmModel(nn.Module):
 
     """
-    Timm 라이브러리를 사용하여 다양한 사전 훈련된 모델을 제공하는 클래스.
+    Timm 라이브러리를 사용하여 다양한 사전 훈련된 모델을 제공하는 클래스. 
 
     Args:
         model_name (str): 사용할 timm 모델의 이름.
