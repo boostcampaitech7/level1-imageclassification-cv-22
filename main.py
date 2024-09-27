@@ -116,3 +116,4 @@ if __name__ == "__main__":
         )
         inference_runner.run_inference()
         print("Inference completed.")
+        
