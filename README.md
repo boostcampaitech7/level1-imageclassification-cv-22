@@ -110,7 +110,6 @@ Team name : CV_22조
 </p>
 
 ### Areas for improvement
-- 불필요한 데이터(이미지 크기)를 필터링하여 학습에 사용할 수 있도록 개선하기
 - 워터마크, 문자 제거를 적용해서 모델 성능을 측정해 보기
 - gradient accumulation을 통해 더 큰 batch size로 학습시키기
 - sketch image의 위치를 detection해서 그 부분만 crop해서 학습에 사용할 수 있도록 개선하기
