@@ -7,7 +7,7 @@ from .torchvision_model import TorchvisionModel
 class ModelSelector:
 
     """
-    사용할 모델 유형을 선택하는 클래스.
+    사용할 모델 유형을 선택하는 클래스. 
 
     Args:
         model_type (str): 사용할 모델의 유형 ('simple', 'torchvision', 'timm').
