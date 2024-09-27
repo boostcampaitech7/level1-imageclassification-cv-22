@@ -15,7 +15,7 @@ from transform.transform_selector import TransformSelector
 class ModelEnsemble:
     
     """
-    여러 모델을 사용하여 앙상블 추론을 수행하는 클래스입니다.
+    여러 모델을 사용하여 앙상블 추론을 수행하는 클래스입니다. 
 
     Args:
         testdata_dir (str): 테스트 데이터가 위치한 디렉토리 경로.
