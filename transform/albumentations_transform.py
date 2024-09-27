@@ -8,7 +8,7 @@ from albumentations.pytorch import ToTensorV2
 class AlbumentationsTransform:
 
     """
-    Albumentations 라이브러리를 사용하여 이미지에 다양한 변환을 적용하는 클래스.
+    Albumentations 라이브러리를 사용하여 이미지에 다양한 변환을 적용하는 클래스. 
 
     Args:
         is_train (bool): 훈련 중인지 여부를 결정하는 플래그. 기본값은 True로, 훈련 모드에서는 추가적인 데이터 증강이 적용됨.
